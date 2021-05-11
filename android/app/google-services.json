@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323901250433",
+    "project_id": "kakaaga-707c1",
+    "storage_bucket": "kakaaga-707c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323901250433:android:cafcd150f9f41e3db3a680",
+        "android_client_info": {
+          "package_name": "com.example.kakaaga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323901250433-dbjtq1llpoth4nhknohglb90as89376u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCMXAWeo4ZytXIVgbeDz8FXJGxVrsPR9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323901250433-dbjtq1llpoth4nhknohglb90as89376u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
