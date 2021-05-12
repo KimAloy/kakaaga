@@ -60,9 +60,17 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     latestListings();
   }
 
-  bool incudeNearbySwitch = true;
+  void nearbyDistrict(String query) {
+    final provider = Provider.of<AdvertProvider>(context, listen: false);
+    final _adverts = provider.mySearchResults.where((element) {
+      final district = element.district!.toLowerCase();
+      final searchLower = query.toLowerCase();
+      return district.contains(searchLower);
+    }).toList();
+    print(_adverts);
+  }
 
-  void searchListByDistrict(String query) {
+  void searchSingleDistrict(String query) {
     final provider = Provider.of<AdvertProvider>(context, listen: false);
     final _adverts = provider.mySearchResults.where((element) {
       final district = element.district!.toLowerCase();
@@ -74,6 +82,23 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
       this.adverts = _adverts;
     });
   }
+
+  void includeNearbyDistricts(String query) {
+    final provider = Provider.of<AdvertProvider>(context, listen: false);
+    List<Advert> searchResults = provider.mySearchResults;
+    List<String> nearbyDistricts =
+        DistrictsLatLongData.calculateMyDistance(query);
+    // print('nearbyDistricts, search results screen: $nearbyDistricts');
+    List<Advert> _adverts = searchResults
+        .where((map) => nearbyDistricts.contains(map.district))
+        .toList();
+    setState(() {
+      this.query = query;
+      this.adverts = _adverts;
+    });
+  }
+
+  bool incudeNearbyDistrictsSwitch = true;
 
   final districtController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -191,12 +216,21 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   Widget includeNearbySwitchWidget() {
     return Switch.adaptive(
         activeColor: kColorOne,
-        value: incudeNearbySwitch,
+        value: incudeNearbyDistrictsSwitch,
         inactiveThumbColor: Colors.brown,
         inactiveTrackColor: Colors.black54,
         // TODO: Implement switch to include nearby districts
-        onChanged: (showNearbySwitch) =>
-            setState(() => this.incudeNearbySwitch = showNearbySwitch));
+        onChanged: (isOn) {
+          setState(() {
+            incudeNearbyDistrictsSwitch = isOn;
+            incudeNearbyDistrictsSwitch
+                ? includeNearbyDistricts(selectedDistrict!)
+                : searchSingleDistrict(selectedDistrict!);
+          });
+        });
+    // onChanged: (showNearbySwitch) => setState(() {
+    //       this.incudeNearbyDistrictsSwitch = showNearbySwitch;
+    //     }));
   }
 
   Widget searchDistrict() => Form(
@@ -204,7 +238,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         child: Row(
           children: [
             Expanded(
-              child: TypeAheadFormField<String?>(
+              child: TypeAheadFormField<DistrictModel>(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: districtController,
                   textCapitalization: TextCapitalization.words,
@@ -225,12 +259,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                suggestionsCallback: DistrictsData.getSuggestions,
-                itemBuilder: (context, String? suggestion) => ListTile(
-                  title: Text(suggestion!),
+                suggestionsCallback: DistrictsLatLongData.getSuggestions,
+                itemBuilder: (context, DistrictModel suggestion) => ListTile(
+                  title: Text(suggestion.name),
                 ),
-                onSuggestionSelected: (String? suggestion) =>
-                    districtController.text = suggestion!,
+                onSuggestionSelected: (DistrictModel suggestion) =>
+                    districtController.text = suggestion.name,
                 onSaved: (value) => selectedDistrict = value,
               ),
             ),
@@ -243,7 +277,9 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                   form.save();
                   print('The district is: $selectedDistrict');
                   setState(() {
-                    searchListByDistrict(selectedDistrict!);
+                    incudeNearbyDistrictsSwitch
+                        ? includeNearbyDistricts(selectedDistrict!)
+                        : searchSingleDistrict(selectedDistrict!);
                   });
                 }
               },

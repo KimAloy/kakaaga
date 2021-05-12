@@ -35,39 +35,12 @@ class _LocationState extends State<Location> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CardTitleText(title: 'Location*'),
-            // Wrap(
-            //   spacing: 5,
-            //   runSpacing: -8,
-            //   children: List.generate(locationInput.length, (int index) {
-            //     String hello = locationInput[index].title;
-            //     return ChoiceChip(
-            //       avatar: locationValue == index
-            //           ? Icon(Icons.done, color: Colors.white, size: 20)
-            //           : null,
-            //       label: Text('$hello'),
-            //       labelStyle: TextStyle(
-            //           color:
-            //               locationValue == index ? Colors.white : Colors.black),
-            //       selected: locationValue == index,
-            //       selectedShadowColor: kColorOne,
-            //       selectedColor: kColorOne,
-            //       onSelected: (bool selected) {
-            //         setState(() {
-            //           locationValue = selected ? index : null;
-            //         });
-            //       },
-            //     );
-            //   }).toList(),
-            // ),
-            // const SizedBox(height: 8),
-            // locationValue == 0
-            //     ? const SizedBox.shrink()
-            //     :
+            const SizedBox(height: 8),
             enterDistrict(),
             const SizedBox(height: 8),
             MyTextFormField(
                 maxLines: 1,
-                labelText: 'Enter Parish name*',
+                labelText: 'Enter parish*',
                 controller: widget.parishController,
                 validator: widget.parishValidator),
             const SizedBox(height: 8),
@@ -78,41 +51,38 @@ class _LocationState extends State<Location> {
   }
 
   Widget enterDistrict() {
-    return Row(
-      children: [
-        Expanded(
-          child: TypeAheadFormField<String?>(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: widget.districtController,
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(10, 11, 10, 11),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    width: 0.5,
-                    color: Colors.black38,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: kColorOne),
-                ),
-                labelText: 'Enter district',
-                labelStyle: TextStyle(color: Colors.black38),
-                border: OutlineInputBorder(),
+    return Container(
+      height: 40,
+      child: TypeAheadFormField<DistrictModel>(
+        textFieldConfiguration: TextFieldConfiguration(
+          controller: widget.districtController,
+          textCapitalization: TextCapitalization.words,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(5, 11, 5, 11),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              borderSide: BorderSide(
+                width: 0.5,
+                color: Colors.black38,
               ),
             ),
-            suggestionsCallback: DistrictsData.getSuggestions,
-            itemBuilder: (context, String? suggestion) => ListTile(
-              title: Text(suggestion!),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: kColorOne),
             ),
-            onSuggestionSelected: (String? suggestion) =>
-                widget.districtController.text = suggestion!,
-            onSaved: (value) => selectedDistrict = value,
-            validator: widget.districtValidator as String? Function(String?)?,
+            labelText: 'Enter district*',
+            labelStyle: TextStyle(fontSize: 14.5),
+            border: OutlineInputBorder(),
           ),
         ),
-      ],
+        suggestionsCallback: DistrictsLatLongData.getSuggestions,
+        itemBuilder: (context, DistrictModel suggestion) => ListTile(
+          title: Text(suggestion.name),
+        ),
+        onSuggestionSelected: (DistrictModel suggestion) =>
+            widget.districtController.text = suggestion.name,
+        onSaved: (value) => selectedDistrict = value,
+        validator: widget.districtValidator as String? Function(String?)?,
+      ),
     );
   }
 }
