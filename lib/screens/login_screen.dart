@@ -101,6 +101,8 @@ class _LoginState extends State<Login> {
                       onPressed: () async {
                         if (_loginFormKey.currentState!.validate()) {
                           setState(() => loading = true);
+                          // TODO: replace this with error from google firestore webiste below
+                          // https://firebase.flutter.dev/docs/firestore/usage/
                           dynamic result =
                               await _auth.signInWithEmailAndPassword(
                             email: _emailController.text,
@@ -108,8 +110,7 @@ class _LoginState extends State<Login> {
                           );
                           if (result == null) {
                             setState(() {
-                              error =
-                                  'Could not sign in with those credentials';
+                              error = 'Invalid email or password';
                               loading = false;
                             });
                           }

@@ -25,4 +25,8 @@ class UserModel {
   //   joinedDate = doc["joinedDate"];
   //   accountBalance = doc["accountBalance"];
   // }
+
+  // @override
+  // toString() =>
+  // '$uid, $name, $email $profilePicture $phoneNumber $joinedDate ${accountBalance.toString()}';
 }

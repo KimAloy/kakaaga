@@ -67,7 +67,7 @@ class NavigationItems extends StatelessWidget {
                     ? () => null
                     : () =>
                         Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return AdvertiseScreen();
+                          return WrapperAdvertise();
                         }))),
             _WatchlistNavigationWidget(
                 color: watchlistColor == null

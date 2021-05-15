@@ -34,17 +34,23 @@ class _MyProfileAndAccountScreenState extends State<MyProfileAndAccountScreen> {
                 body: SafeArea(
                     child: Column(
               children: [
-                Text('Something went wrong'),
-                _SettingsOptions(
-                  text: 'Logout',
-                  icon: Icons.power_settings_new_outlined,
-                  color: Colors.red,
-                  onTap: () {
-                    _authService.signOut();
-                    Navigator.pop(context);
-                    print('"Logout Account icon tapped"');
-                  },
-                ),
+                GestureDetector(
+                    onTap: () {
+                      _authService.signOut();
+                      Navigator.pop(context);
+                      print('"Logout Account icon tapped"');
+                    },
+                    child: Text('Loading...')),
+                // _SettingsOptions(
+                //   text: 'Logout',
+                //   icon: Icons.power_settings_new_outlined,
+                //   color: Colors.red,
+                //   onTap: () {
+                //     _authService.signOut();
+                //     Navigator.pop(context);
+                //     print('"Logout Account icon tapped"');
+                //   },
+                // ),
               ],
             )));
           }

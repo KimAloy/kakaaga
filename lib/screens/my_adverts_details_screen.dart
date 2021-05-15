@@ -4,16 +4,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kakaaga/config/config.dart';
 import 'package:kakaaga/models/models.dart';
 import 'package:kakaaga/provider/advert_provider.dart';
-import 'package:kakaaga/screens/screens.dart';
+import 'file:///C:/Users/MadCoder/AndroidStudioProjects/kakaaga/lib/screens/edit_advert_screen.dart';
 import 'package:kakaaga/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class NewAdvertDetailsScreen extends StatefulWidget {
+class MyAdvertsDetailsScreen extends StatefulWidget {
   final Advert advertData;
   final bool showWatchlistIcon;
   final int index;
 
-  const NewAdvertDetailsScreen({
+  const MyAdvertsDetailsScreen({
     Key? key,
     required this.advertData,
     this.showWatchlistIcon = true,
@@ -21,10 +21,10 @@ class NewAdvertDetailsScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _NewAdvertDetailsScreenState createState() => _NewAdvertDetailsScreenState();
+  _MyAdvertsDetailsScreenState createState() => _MyAdvertsDetailsScreenState();
 }
 
-class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
+class _MyAdvertsDetailsScreenState extends State<MyAdvertsDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AdvertProvider>(context);
@@ -36,7 +36,7 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widget.advertData.images == null
+              widget.advertData.images!.isEmpty
                   ? const SizedBox.shrink()
                   : Column(
                       children: [
@@ -52,8 +52,11 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
                         const SizedBox(height: 15)
                       ],
                     ),
-              widget.advertData.images != null
-                  ? const SizedBox.shrink()
+              widget.advertData.images!.isEmpty
+                  ? IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -137,32 +140,36 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
                         ? const SizedBox.shrink()
                         : _MyFlatButtons(
                             editAdvertOnPressed: () {
+                              editAdvert(widget.advertData);
+
                               print(
                                   '"edit advert pressed, found in new_advert_details_screen"');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) {
-                                    return EditAdvertScreen(
-                                        index: widget.index);
-                                  },
-                                ),
-                              ).whenComplete(() => setState(() => {
-                                    // THIS CODE BELOW 'widget.index' IS QUITE USELESS
-                                    // THIS STILL WORKS EVEN WITHOUT IT
-                                    // widget.index //
-                                  }));
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (_) {
+                              //         return EditAdvertScreen(
+                              //             index: widget.index);
+                              //       },
+                              //     ),
+                              //   ).whenComplete(() => setState(() => {
+                              //         // THIS CODE BELOW 'widget.index' IS QUITE USELESS
+                              //         // THIS STILL WORKS EVEN WITHOUT IT
+                              //         // widget.index //
+                              //       }));
                             },
                             deleteAdvertOnPressed: () {
                               print('"delete advert pressed"');
                               showDialog(
                                 context: context,
-                                builder: (_) => _DeleteAdvertDialog(
+                                builder: (_) => DeleteAdvertDialog(
                                   onPressed: () {
                                     print('"Yes delete advert tapped"');
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                     myAdverts.remove(widget.advertData);
+                                    // from johannes at timestamp 05:12 in - Flutter Tutorial - 2_2 TodoApp UI From Scratch
+                                    deleteAdvert(widget.advertData);
                                   },
                                 ),
                               );
@@ -240,7 +247,7 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SelectableText(
-                          '${widget.advertData.advertPhoneNumber}',
+                          '${widget.advertData.phoneNumber}',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -298,7 +305,7 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
                               Icon(Icons.access_time),
                               const SizedBox(width: 8),
                               SelectableText(
-                                'Listed: ${kConvertDateTime(DateTime.parse(widget.advertData.listed!))} ',
+                                'Listed: ${kConvertDateTime(DateTime.parse(widget.advertData.createdTime!.toString()))} ',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ],
@@ -307,8 +314,8 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 25),
-                    widget.advertData.description!.isEmpty
-                        // advertData.description == null // THIS DOESN'T WORK
+                    // widget.advertData.description!.isEmpty
+                    widget.advertData.description == null // THIS DOESN'T WORK
                         ? const SizedBox.shrink()
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -354,6 +361,28 @@ class _NewAdvertDetailsScreenState extends State<NewAdvertDetailsScreen> {
       ),
     );
   }
+
+  void deleteAdvert(Advert advert) {
+    final provider = Provider.of<AdvertProvider>(context, listen: false);
+    provider.deleteAdvertProvider(advert);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Advert deleted.'),
+        backgroundColor: kColorOne,
+      ),
+    );
+  }
+
+  void editAdvert(Advert advertData) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) {
+          return EditAdvertScreen(advert: widget.advertData);
+        },
+      ),
+    );
+  }
 }
 
 class _MyFlatButtons extends StatelessWidget {
@@ -370,80 +399,19 @@ class _MyFlatButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        TextButton.icon(
+        OutlinedButton.icon(
           onPressed: deleteAdvertOnPressed as void Function()?,
-          icon: Icon(
-            Icons.delete_forever_outlined,
-            size: 20,
-          ),
-          label: Text(
-            'Delete',
-            style: TextStyle(),
-          ),
-          style: TextButton.styleFrom(
-            primary: Colors.red,
-            side: BorderSide(
-              color: Colors.red,
-              width: 0.5,
-            ),
-          ),
+          icon: Icon(Icons.delete_forever_outlined, size: 20),
+          label: Text('Delete'),
+          style: TextButton.styleFrom(primary: Colors.red),
         ),
         const SizedBox(width: 15),
-        TextButton.icon(
+        OutlinedButton.icon(
           onPressed: editAdvertOnPressed as void Function()?,
-          icon: Icon(
-            Icons.edit,
-            size: 20,
-          ),
-          label: Text(
-            'Edit',
-            style: TextStyle(),
-          ),
-          style: TextButton.styleFrom(
-            primary: kColorOne,
-            side: BorderSide(
-              color: kColorOne,
-              width: 0.5,
-            ),
-          ),
+          icon: Icon(Icons.edit, size: 20),
+          label: Text('Edit'),
+          style: TextButton.styleFrom(primary: kColorOne),
         ),
-      ],
-    );
-  }
-}
-
-class _DeleteAdvertDialog extends StatelessWidget {
-  final Function onPressed;
-
-  const _DeleteAdvertDialog({Key? key, required this.onPressed})
-      : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Delete Advert'),
-      content: Text('Are you sure you want to permanently delete this advert?'),
-      actions: <Widget>[
-        TextButton(
-          style: TextButton.styleFrom(primary: kColorTwo),
-          child: Text(
-            'Yes',
-            style: TextStyle(fontSize: 15),
-          ),
-          onPressed: onPressed as void Function()?,
-        ),
-        const SizedBox(width: 25),
-        TextButton(
-          style: TextButton.styleFrom(primary: kColorTwo),
-          child: Text(
-            'No',
-            style: TextStyle(fontSize: 15),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-            print("'No, don't delete advert tapped'");
-          },
-        ),
-        const SizedBox(width: 15),
       ],
     );
   }

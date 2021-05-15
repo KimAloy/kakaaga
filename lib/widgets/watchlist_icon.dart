@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kakaaga/config/config.dart';
 import 'package:kakaaga/models/models.dart';
-import 'package:kakaaga/provider/advert_provider.dart';
-import 'package:provider/provider.dart';
 
 class WatchlistIcon extends StatefulWidget {
   final Advert advertData;
@@ -20,14 +18,14 @@ class WatchlistIcon extends StatefulWidget {
 class _WatchlistIconState extends State<WatchlistIcon> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AdvertProvider>(context);
+    // final provider = Provider.of<AdvertProvider>(context);
 
     return GestureDetector(
       onTap: () {
-        provider.toggleWatchlisted(widget.advertData);
-        widget.advertData.isWatchlisted
-            ? provider.addToWatchlist(widget.advertData)
-            : provider.removeFromWatchlist(widget.advertData);
+        // provider.toggleWatchlisted(widget.advertData);
+        // widget.advertData.isWatchlisted
+        //     ? provider.addToWatchlist(widget.advertData)
+        //     : provider.removeFromWatchlist(widget.advertData);
       },
       child: Stack(
         children: [
@@ -40,9 +38,9 @@ class _WatchlistIconState extends State<WatchlistIcon> {
                 child: Icon(
                   FontAwesomeIcons.binoculars,
                   size: 20,
-                  color: widget.advertData.isWatchlisted
-                      ? Colors.red
-                      : Colors.black,
+                  // color: widget.advertData.isWatchlisted
+                  //     ? Colors.red
+                  //     : Colors.black,
                 ),
               ),
             ),

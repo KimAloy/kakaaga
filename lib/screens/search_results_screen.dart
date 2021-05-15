@@ -22,7 +22,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 
   void latestListings() {
     setState(() {
-      adverts.sort((a, b) => b.listed!.compareTo(a.listed!));
+      adverts.sort((a, b) => b.createdTime!.compareTo(a.createdTime!));
     });
   }
 
@@ -175,35 +175,42 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: adverts.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 5),
-                  itemBuilder: (context, index) {
-                    final Advert advertItem = adverts[index];
-                    return advertItem.images == null
-                        ? ForSaleNoImageContainer(
-                            advertData: advertItem,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return SearchResultsAdvertDetailsScreen(
-                                    advertData: advertItem);
-                              }));
-                            })
-                        : ForSaleContainerHasImage(
-                            advertData: advertItem,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return SearchResultsAdvertDetailsScreen(
-                                    advertData: advertItem);
-                              }));
-                            });
-                  },
-                ),
+                adverts.isEmpty
+                    ? Center(
+                        child: Text(
+                          'No adverts.',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: adverts.length,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const SizedBox(height: 5),
+                        itemBuilder: (context, index) {
+                          final Advert advertItem = adverts[index];
+                          return advertItem.images!.isEmpty
+                              ? ForSaleNoImageContainer(
+                                  advertData: advertItem,
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return SearchResultsAdvertDetailsScreen(
+                                          advertData: advertItem);
+                                    }));
+                                  })
+                              : ForSaleContainerHasImage(
+                                  advertData: advertItem,
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return SearchResultsAdvertDetailsScreen(
+                                          advertData: advertItem);
+                                    }));
+                                  });
+                        },
+                      ),
                 const SizedBox(height: 100),
               ],
             ),
@@ -219,7 +226,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
         value: incudeNearbyDistrictsSwitch,
         inactiveThumbColor: Colors.brown,
         inactiveTrackColor: Colors.black54,
-        // TODO: Implement switch to include nearby districts
         onChanged: (isOn) {
           setState(() {
             incudeNearbyDistrictsSwitch = isOn;

@@ -51,38 +51,35 @@ class _LocationState extends State<Location> {
   }
 
   Widget enterDistrict() {
-    return Container(
-      height: 40,
-      child: TypeAheadFormField<DistrictModel>(
-        textFieldConfiguration: TextFieldConfiguration(
-          controller: widget.districtController,
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(5, 11, 5, 11),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-              borderSide: BorderSide(
-                width: 0.5,
-                color: Colors.black38,
-              ),
+    return TypeAheadFormField<DistrictModel>(
+      textFieldConfiguration: TextFieldConfiguration(
+        controller: widget.districtController,
+        textCapitalization: TextCapitalization.words,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: BorderSide(
+              width: 0.5,
+              color: Colors.black38,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: kColorOne),
-            ),
-            labelText: 'Enter district*',
-            labelStyle: TextStyle(fontSize: 14.5),
-            border: OutlineInputBorder(),
           ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: kColorOne),
+          ),
+          labelText: 'Enter district*',
+          labelStyle: TextStyle(fontSize: 14.5),
+          border: OutlineInputBorder(),
         ),
-        suggestionsCallback: DistrictsLatLongData.getSuggestions,
-        itemBuilder: (context, DistrictModel suggestion) => ListTile(
-          title: Text(suggestion.name),
-        ),
-        onSuggestionSelected: (DistrictModel suggestion) =>
-            widget.districtController.text = suggestion.name,
-        onSaved: (value) => selectedDistrict = value,
-        validator: widget.districtValidator as String? Function(String?)?,
       ),
+      suggestionsCallback: DistrictsLatLongData.getSuggestions,
+      itemBuilder: (context, DistrictModel suggestion) => ListTile(
+        title: Text(suggestion.name),
+      ),
+      onSuggestionSelected: (DistrictModel suggestion) =>
+          widget.districtController.text = suggestion.name,
+      onSaved: (value) => selectedDistrict = value,
+      validator: widget.districtValidator as String? Function(String?)?,
     );
   }
 }

@@ -21,7 +21,7 @@ class SearchResultsAdvertDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              advertData.images == null
+              advertData.images!.isEmpty
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -102,7 +102,7 @@ class SearchResultsAdvertDetailsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SelectableText(
-                          '${advertData.advertPhoneNumber}',
+                          '${advertData.phoneNumber}',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -192,7 +192,7 @@ class SearchResultsAdvertDetailsScreen extends StatelessWidget {
                               Icon(Icons.access_time),
                               const SizedBox(width: 8),
                               SelectableText(
-                                'Listed: ${kConvertDateTime(DateTime.parse(advertData.listed!))} ',
+                                'Listed: ${kConvertDateTime(DateTime.parse(advertData.createdTime!.toString()))} ',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ],

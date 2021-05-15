@@ -38,6 +38,7 @@ class DeleteAccountDialog extends StatelessWidget {
             Navigator.pop(context);
             // TODO: Add Firebase plugin to delete user data, you should be on Blaze Plan
             await _auth.deleteAccount();
+            // WrapperMyAccount(); // this is not necessary because we're listening to stream provider!
 
             /// THIS IS CUMBERSOME, USE FIREBASE 'DELETE USER DATA' PLUGIN
             // await DatabaseService().deleteUserFirestoreData();

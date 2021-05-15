@@ -8,5 +8,5 @@ export 'my_adverts_screen.dart';
 export 'advertise_screen.dart';
 export 'edit_advert_screen.dart';
 export 'my_profile_and_account_screen.dart';
-export 'new_advert_details_screen.dart';
+export 'my_adverts_details_screen.dart';
 export 'search_results_screen.dart';

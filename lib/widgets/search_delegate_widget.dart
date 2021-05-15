@@ -86,9 +86,9 @@ class SearchDelegateWidget extends SearchDelegate {
           title: data.title,
           district: data.district,
           parish: data.parish,
-          listed: data.listed,
+          createdTime: data.createdTime,
           price: data.price,
-          advertPhoneNumber: data.advertPhoneNumber,
+          phoneNumber: data.phoneNumber,
           advertiserName: data.advertiserName,
           advertiserJoinedDate: data.advertiserJoinedDate,
           advertiserProfilePicture: data.advertiserProfilePicture,
@@ -96,8 +96,7 @@ class SearchDelegateWidget extends SearchDelegate {
           eachCheckbox: data.eachCheckbox,
           whatsApp: data.whatsApp,
           phoneCallOk: data.phoneCallOk,
-          listingID: data.listingID,
-          isWatchlisted: data.isWatchlisted,
+          // isWatchlisted: data.isWatchlisted,
         ));
       }
     }

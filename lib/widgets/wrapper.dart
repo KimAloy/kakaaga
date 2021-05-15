@@ -6,12 +6,26 @@ import 'package:provider/provider.dart';
 class WrapperMyAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel?>(context);
+    final UserModel? user = Provider.of<UserModel?>(context);
     print('WrapperMyAccoutn: $user');
     if (user == null) {
       return Login();
     } else {
-      return MyProfileAndAccountScreen();
+      // return MyProfileAndAccountScreen();
+      return MyAdvertsScreen();
+    }
+  }
+}
+
+class WrapperAdvertise extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final UserModel? user = Provider.of<UserModel?>(context);
+    print('WrapperMyAccoutn: $user');
+    if (user == null) {
+      return Login();
+    } else {
+      return AdvertiseScreen();
     }
   }
 }

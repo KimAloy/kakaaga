@@ -133,7 +133,7 @@ class ForSaleContainerHasImage extends StatelessWidget {
                       children: [
                         const SizedBox(width: 85),
                         Text(
-                          'Listed: ${kConvertDateTime(DateTime.parse(advertData.listed!))}',
+                          'Listed: ${kConvertDateTime(DateTime.parse(advertData.createdTime!.toString()))}',
                           style:
                               TextStyle(color: Colors.black54, fontSize: 14.5),
                         ),
@@ -285,7 +285,7 @@ class ForSaleNoImageContainer extends StatelessWidget {
                           ),
                         ),
                   Text(
-                    'Listed: ${kConvertDateTime(DateTime.parse(advertData.listed!))}',
+                    'Listed: ${kConvertDateTime(DateTime.parse(advertData.createdTime!.toString()))}',
                     style: TextStyle(color: Colors.black54, fontSize: 14.5),
                   ),
                   SizedBox(height: 4),

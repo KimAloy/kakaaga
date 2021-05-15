@@ -5,23 +5,27 @@ import 'package:kakaaga/widgets/widgets.dart';
 
 class MyPreferredContact extends StatelessWidget {
   final String title;
-  final TextEditingController controller;
   final Function validator;
   final bool whatsApp;
   final bool phoneCallOk;
   final Function onSelectedWhatsApp;
   final Function onSelectedPhoneCallOk;
+  // final Function? onChanged;
+  // final initialValue;
+  final TextEditingController? controller;
 
-  const MyPreferredContact({
-    Key? key,
-    required this.title,
-    required this.controller,
-    required this.validator,
-    required this.whatsApp,
-    required this.phoneCallOk,
-    required this.onSelectedWhatsApp,
-    required this.onSelectedPhoneCallOk,
-  }) : super(key: key);
+  const MyPreferredContact(
+      {Key? key,
+      required this.title,
+      required this.validator,
+      required this.whatsApp,
+      required this.phoneCallOk,
+      required this.onSelectedWhatsApp,
+      required this.onSelectedPhoneCallOk,
+      // this.onChanged,
+      // this.initialValue,
+      this.controller})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -34,11 +38,10 @@ class MyPreferredContact extends StatelessWidget {
             CardTitleText(title: title),
             const SizedBox(height: 8),
             MyTextFormField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-              ],
-              controller: controller,
-              keyboardType: TextInputType.number,
+              // initialValue: initialValue,
+              controller: controller!,
+              // onChanged: onChanged,
+              keyboardType: TextInputType.phone,
               validator: validator,
               labelText: 'Phone number*',
             ),

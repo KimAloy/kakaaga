@@ -7,7 +7,7 @@ import 'package:kakaaga/provider/advert_provider.dart';
 import 'package:kakaaga/screens/screens.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());

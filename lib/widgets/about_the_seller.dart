@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kakaaga/config/config.dart';
 import 'package:kakaaga/models/models.dart';
 
@@ -10,6 +11,10 @@ class AboutTheSellerOrBuyer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime now = advertData.advertiserJoinedDate!;
+    final DateFormat formatter = DateFormat('yMMMMd');
+    final String formatted = formatter.format(now);
+    print('about the seller: $formatted');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,7 +59,11 @@ class AboutTheSellerOrBuyer extends StatelessWidget {
                       style: TextStyle(fontSize: 17))),
               Expanded(
                   flex: 2,
-                  child: SelectableText('${advertData.advertiserJoinedDate}',
+                  child: SelectableText(
+                      // '${DateTime.parse(advertData.advertiserJoinedDate!.toString())}',
+                      // '${DateTime.parse(advertData.createdTime!.toString())}',
+                      formatted,
+                      // '${advertData.advertiserJoinedDate}',
                       style: TextStyle(fontSize: 17)))
             ],
           ),
